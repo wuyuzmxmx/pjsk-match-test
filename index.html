@@ -4,7 +4,6 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
     <title>世界计划 · 角色性格匹配度测试 | 缤纷舞台邂逅</title>
-    <!-- 清新风格 & 响应式 -->
     <style>
         * {
             margin: 0;
@@ -22,9 +21,8 @@
             align-items: center;
         }
 
-        /* 主卡片 */
         .test-container {
-            max-width: 900px;
+            max-width: 1100px;
             width: 100%;
             margin: 0 auto;
             background: rgba(255, 255, 255, 0.92);
@@ -35,7 +33,6 @@
             transition: all 0.2s ease;
         }
 
-        /* 头部区域 */
         .hero {
             background: #2b2d42;
             background-image: radial-gradient(circle at 10% 20%, #3c2f5f, #1e1a2f);
@@ -80,7 +77,67 @@
             border-radius: 40px;
         }
 
-        /* 进度条 */
+        /* 角色图鉴切换tab */
+        .encyclopedia-tab {
+            background: #f0e2d4;
+            padding: 0.5rem 2rem;
+            border-bottom: 1px solid #ffd9bf;
+            display: flex;
+            justify-content: center;
+        }
+        .tab-btn {
+            background: transparent;
+            box-shadow: none;
+            color: #7b5a44;
+            padding: 8px 20px;
+            margin: 0 6px;
+            font-weight: 600;
+            border-radius: 40px;
+        }
+        .tab-btn.active {
+            background: #e76f51;
+            color: white;
+        }
+        .char-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+            gap: 1.2rem;
+            padding: 1.5rem 2rem;
+            background: #fffaf5;
+            max-height: 500px;
+            overflow-y: auto;
+        }
+        .char-card {
+            background: white;
+            border-radius: 1.5rem;
+            padding: 1rem;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.05);
+            transition: transform 0.1s ease;
+            border-left: 6px solid;
+        }
+        .char-name {
+            font-weight: 800;
+            font-size: 1.2rem;
+            display: flex;
+            justify-content: space-between;
+        }
+        .char-group {
+            font-size: 0.7rem;
+            background: #f1e4d9;
+            padding: 2px 8px;
+            border-radius: 40px;
+        }
+        .char-desc {
+            font-size: 0.85rem;
+            margin: 8px 0;
+            color: #4d3a2c;
+            line-height: 1.4;
+        }
+        .char-quote {
+            font-style: italic;
+            font-size: 0.75rem;
+            color: #c38e5f;
+        }
         .progress-area {
             background: #f0e2d4;
             padding: 0.8rem 2rem;
@@ -91,7 +148,6 @@
             gap: 10px;
             border-bottom: 1px solid #ffd9bf;
         }
-
         .q-counter {
             font-weight: 600;
             background: #fff2e6;
@@ -100,7 +156,6 @@
             color: #a0522d;
             font-size: 0.9rem;
         }
-
         .progress-bar-bg {
             flex: 1;
             height: 8px;
@@ -108,7 +163,6 @@
             border-radius: 12px;
             overflow: hidden;
         }
-
         .progress-fill {
             width: 0%;
             height: 100%;
@@ -116,13 +170,10 @@
             border-radius: 12px;
             transition: width 0.25s ease;
         }
-
-        /* 问题卡片 */
         .question-card {
             padding: 2rem 2rem 1.8rem;
             border-bottom: 1px solid #ffe1cc;
         }
-
         .question-text {
             font-size: 1.5rem;
             font-weight: 600;
@@ -130,14 +181,11 @@
             line-height: 1.4;
             margin-bottom: 2rem;
         }
-
-        /* 选项样式 类MBTI Likert 五点 */
         .options {
             display: flex;
             flex-direction: column;
             gap: 0.9rem;
         }
-
         .option-item {
             background: #ffffffdd;
             border: 1px solid #ffe0cd;
@@ -149,13 +197,11 @@
             transition: all 0.2s;
             box-shadow: 0 1px 2px rgba(0,0,0,0.02);
         }
-
         .option-item:hover {
             background: #fff5ed;
             border-color: #f7b787;
             transform: translateX(4px);
         }
-
         .option-radio {
             margin-right: 1rem;
             accent-color: #e76f51;
@@ -163,7 +209,6 @@
             height: 20px;
             cursor: pointer;
         }
-
         .option-label {
             font-size: 1rem;
             font-weight: 500;
@@ -171,14 +216,11 @@
             letter-spacing: -0.2px;
             flex: 1;
         }
-
         .option-desc {
             font-size: 0.8rem;
             color: #9b7a64;
             margin-left: 8px;
         }
-
-        /* 按钮区域 */
         .nav-buttons {
             display: flex;
             justify-content: space-between;
@@ -186,7 +228,6 @@
             gap: 16px;
             background: #fef7f0;
         }
-
         button {
             background: #2e294e;
             border: none;
@@ -199,45 +240,38 @@
             transition: all 0.2s;
             box-shadow: 0 2px 5px rgba(0,0,0,0.1);
         }
-
         button:active {
             transform: scale(0.96);
         }
-
         .btn-prev {
             background: #c7b09a;
             color: #2d2a3e;
         }
-
         .btn-next, .btn-submit {
             background: #e76f51;
         }
-
         .btn-submit {
             background: #2a9d8f;
         }
-
         button:disabled {
             opacity: 0.5;
             transform: none;
             cursor: not-allowed;
         }
-
-        /* 结果区域 */
         .result-area {
             padding: 2rem;
             background: #fffbf5;
             border-top: 1px solid #ffdec5;
         }
-
         .result-card {
             background: white;
             border-radius: 2rem;
             padding: 1.8rem;
             box-shadow: 0 10px 20px rgba(0,0,0,0.05);
             text-align: center;
+            border-top: 8px solid;
+            transition: border-color 0.2s;
         }
-
         .result-name {
             font-size: 2.2rem;
             font-weight: 800;
@@ -247,7 +281,6 @@
             color: transparent;
             margin-bottom: 8px;
         }
-
         .result-group {
             background: #f2e8de;
             display: inline-block;
@@ -258,25 +291,21 @@
             color: #6b4c3a;
             margin-bottom: 1rem;
         }
-
         .result-desc {
             margin: 1rem 0;
             line-height: 1.5;
             color: #4e3a2c;
         }
-
         .reset-btn {
             background: #f4a261;
             margin-top: 20px;
             padding: 10px 24px;
         }
-
         .all-chars {
             margin-top: 1rem;
             font-size: 0.7rem;
             color: #ac8e74;
         }
-
         footer {
             text-align: center;
             padding: 1rem;
@@ -284,20 +313,12 @@
             background: #f2e3d6;
             color: #ad8b70;
         }
-
         @media (max-width: 640px) {
-            body {
-                padding: 1rem;
-            }
-            .question-text {
-                font-size: 1.25rem;
-            }
-            .option-label {
-                font-size: 0.9rem;
-            }
-            .hero h1 {
-                font-size: 1.4rem;
-            }
+            body { padding: 1rem; }
+            .question-text { font-size: 1.25rem; }
+            .option-label { font-size: 0.9rem; }
+            .hero h1 { font-size: 1.4rem; }
+            .char-grid { padding: 1rem; }
         }
     </style>
 </head>
@@ -309,7 +330,22 @@
         <div class="badge-char">✨ Leo/need · MMJ · WS · VBS · 25点，Nightcord见 ✨</div>
     </div>
 
-    <!-- 动态区域 vue -->
+    <!-- 角色图鉴区域 (展示所有角色desc) 默认折叠? 直接显示在测试前/后均可见，优雅tab -->
+    <div class="encyclopedia-tab">
+        <button class="tab-btn" :class="{active: showEncyclopedia}" @click="showEncyclopedia = !showEncyclopedia">📖 全角色图鉴 (性格描述)</button>
+    </div>
+    <div v-if="showEncyclopedia" class="char-grid">
+        <div v-for="ch in allCharacters" :key="ch.id" class="char-card" :style="{borderLeftColor: getCharacterColor(ch.id)}">
+            <div class="char-name">
+                {{ ch.name }}
+                <span class="char-group">{{ ch.group }}</span>
+            </div>
+            <div class="char-desc">{{ ch.desc }}</div>
+            <div class="char-quote">「 {{ ch.quote }} 」</div>
+        </div>
+    </div>
+
+    <!-- 测试主体 -->
     <div v-if="!isFinished">
         <div class="progress-area">
             <div class="q-counter">第 {{ currentIndex+1 }} / {{ totalQuestions }} 题</div>
@@ -332,8 +368,8 @@
     </div>
 
     <div v-else class="result-area">
-        <div class="result-card">
-            <div class="result-name">{{ matchedCharacter.name }}</div>
+        <div class="result-card" :style="{borderTopColor: matchedColor}">
+            <div class="result-name" :style="{color: matchedColor}">{{ matchedCharacter.name }}</div>
             <div class="result-group">{{ matchedCharacter.group }} · {{ matchedCharacter.subtitle }}</div>
             <div class="result-desc">
                 <p style="margin-bottom: 12px;">🌟 匹配契合度 : {{ matchPercentage }}% 🌟</p>
@@ -349,79 +385,76 @@
 
 <script src="https://cdn.jsdelivr.net/npm/vue@2.7.14/dist/vue.js"></script>
 <script>
-// 定义20个角色详细档案 (MBTI式风格 + 性格概述)
+// ---------- 角色数据 (包含代表色) ----------
 const CHARACTERS = [
-    { id: 0, name: "星乃一歌", group: "Leo/need", subtitle: "温柔内敛的吉他手", 
+    { id: 0, name: "星乃一歌", group: "Leo/need", subtitle: "温柔内敛的吉他手", color: "#33aaee",
       desc: "表面沉默却珍视友情，责任感强，重拾羁绊的乐队灵魂。你和她一样，外表冷静但内心炽热，习惯默默守护伙伴。",
       quote: "就算迷失方向，只要大家一起就能继续前进。", traits: [2,4,1,3,5] },
-    { id: 1, name: "天马咲希", group: "Leo/need", subtitle: "开朗气氛制造者",
+    { id: 1, name: "天马咲希", group: "Leo/need", subtitle: "开朗气氛制造者", color: "#ffdd44",
       desc: "永远带着笑容，渴望青春体验，珍视日常温暖。你有着同款积极感染力，也懂得珍惜身边人。",
       quote: "每一天都是最棒的宝物！", traits: [5,2,3,4,1] },
-    { id: 2, name: "望月穗波", group: "Leo/need", subtitle: "温柔优等生",
+    { id: 2, name: "望月穗波", group: "Leo/need", subtitle: "温柔优等生", color: "#ee6666",
       desc: "稳重细腻，在乐队中变得坚强。你懂得共情与包容，内心坚毅。",
       quote: "和大家一起演奏的话，就不必一个人硬撑了。", traits: [3,4,2,5,1] },
-    { id: 3, name: "日野森志步", group: "Leo/need", subtitle: "孤高音乐家",
+    { id: 3, name: "日野森志步", group: "Leo/need", subtitle: "孤高音乐家", color: "#bbdd22",
       desc: "对音乐严格，外冷内热，用行动支持同伴。你执着认真，不擅长表达情感却值得信赖。",
       quote: "音乐不需要谎言，实力才是唯一标准。", traits: [1,5,3,2,4] },
     // MORE MORE JUMP!
-    { id: 4, name: "花里实乃理", group: "MORE MORE JUMP!", subtitle: "努力家偶像",
+    { id: 4, name: "花里实乃理", group: "MORE MORE JUMP!", subtitle: "努力家偶像", color: "#ffccaa",
       desc: "屡败屡战，对偶像纯粹热忱，温柔而坚韧。你同样不轻言放弃，充满追梦勇气。",
       quote: "我想成为能让人打起精神的偶像！", traits: [5,2,4,3,1] },
-    { id: 5, name: "桐谷遥", group: "MORE MORE JUMP!", subtitle: "超凡魅力之星",
+    { id: 5, name: "桐谷遥", group: "MORE MORE JUMP!", subtitle: "超凡魅力之星", color: "#99ccff",
       desc: "前国民偶像，沉稳可靠，实力派。你天生拥有领导气质，让人感到安心。",
       quote: "站上舞台，就必须对观众负责。", traits: [4,3,5,2,1] },
-    { id: 6, name: "桃井爱莉", group: "MORE MORE JUMP!", subtitle: "自信傲娇前辈",
+    { id: 6, name: "桃井爱莉", group: "MORE MORE JUMP!", subtitle: "自信傲娇前辈", color: "#ffaacc",
       desc: "热情而傲娇，对偶像事业自豪，照顾后辈。你自信且温柔，刀子嘴豆腐心。",
       quote: "偶像的光辉，我会守护到底！", traits: [3,5,2,4,1] },
-    { id: 7, name: "日野森雫", group: "MORE MORE JUMP!", subtitle: "优雅冒失鬼",
+    { id: 7, name: "日野森雫", group: "MORE MORE JUMP!", subtitle: "优雅冒失鬼", color: "#99eedd",
       desc: "气质成熟但偶尔笨拙，追求真实自我。你优雅中带着天然，有独特亲和力。",
       quote: "我想做真正的自己，而不是被塑造的偶像。", traits: [2,3,4,5,1] },
     // Wonderlands × Showtime
-    { id: 8, name: "天马司", group: "Wonderlands×Showtime", subtitle: "自信领导者",
+    { id: 8, name: "天马司", group: "Wonderlands×Showtime", subtitle: "自信领导者", color: "#ffbb00",
       desc: "张扬乐观，本质可靠，舞台之星。你有着表现欲与责任心，是团队的活力核心。",
       quote: "世界第一的未来之星就是我！", traits: [5,4,2,3,1] },
-    { id: 9, name: "凤笑梦", group: "Wonderlands×Showtime", subtitle: "梦想家",
+    { id: 9, name: "凤笑梦", group: "Wonderlands×Showtime", subtitle: "梦想家", color: "#ff66bb",
       desc: "天马行空的想象力，共情力极强。你拥有奇思妙想，温暖又浪漫。",
       quote: "让所有人都能展露笑容的舞台，一定能实现！", traits: [5,3,4,2,1] },
-    { id: 10, name: "草薙宁宁", group: "Wonderlands×Showtime", subtitle: "毒舌天才歌姬",
+    { id: 10, name: "草薙宁宁", group: "Wonderlands×Showtime", subtitle: "毒舌天才歌姬", color: "#33dd99",
       desc: "内向但聪慧，冷静吐槽役，游戏宅。你内敛聪明，拥有独特观察力。",
       quote: "真是的，你们总搞些麻烦事……不过，还不坏。", traits: [2,5,3,4,1] },
-    { id: 11, name: "神代类", group: "Wonderlands×Showtime", subtitle: "天才发明家",
+    { id: 11, name: "神代类", group: "Wonderlands×Showtime", subtitle: "天才发明家", color: "#bb88ee",
       desc: "创新孤独，找到归宿后发挥才华。你思维独特，钟情创造，偶尔迟钝但温柔。",
       quote: "让想象成为现实，这才是我追求的演出。", traits: [3,5,2,4,1] },
     // Vivid BAD SQUAD
-    { id: 12, name: "小豆泽心羽", group: "Vivid BAD SQUAD", subtitle: "内向潜力股",
+    { id: 12, name: "小豆泽心羽", group: "Vivid BAD SQUAD", subtitle: "内向潜力股", color: "#ff6699",
       desc: "害羞但歌声有力，逐渐自信。你温和而充满潜力，在伙伴陪伴下闪光。",
       quote: "想要用自己的歌声，传达心意。", traits: [4,2,5,3,1] },
-    { id: 13, name: "白石杏", group: "Vivid BAD SQUAD", subtitle: "热情领导者",
+    { id: 13, name: "白石杏", group: "Vivid BAD SQUAD", subtitle: "热情领导者", color: "#00bbdd",
       desc: "爽朗大姐姐，街头音乐之魂。你热血进取，是团队凝聚点。",
       quote: "超越RAD WEEKEND，这就是我的目标！", traits: [5,3,4,2,1] },
-    { id: 14, name: "东云彰人", group: "Vivid BAD SQUAD", subtitle: "好胜自信男孩",
+    { id: 14, name: "东云彰人", group: "Vivid BAD SQUAD", subtitle: "好胜自信男孩", color: "#ff7722",
       desc: "不服输，崇拜街头文化，努力家。你骄傲又勤奋，渴望证明自己。",
       quote: "靠实力说话，就是我的风格。", traits: [4,5,2,3,1] },
-    { id: 15, name: "青柳冬弥", group: "Vivid BAD SQUAD", subtitle: "冷静合作者",
+    { id: 15, name: "青柳冬弥", group: "Vivid BAD SQUAD", subtitle: "冷静合作者", color: "#0077dd",
       desc: "出身古典音乐却热爱街头，理性成熟。你沉稳谦逊，善于协作。",
       quote: "音乐的形式无法束缚灵魂。", traits: [3,4,5,2,1] },
     // 25点，Nightcord见。
-    { id: 16, name: "宵崎奏", group: "25点，Nightcord见。", subtitle: "温柔作曲家",
+    { id: 16, name: "宵崎奏", group: "25点，Nightcord见。", subtitle: "温柔作曲家", color: "#bb6688",
       desc: "悲观但温柔，渴望通过音乐带来幸福。你细腻忧郁，对艺术执着。",
       quote: "如果我的曲子，能让某人感到幸福就好了。", traits: [2,3,5,4,1] },
-    { id: 17, name: "朝比奈真冬", group: "25点，Nightcord见。", subtitle: "空虚优等生",
+    { id: 17, name: "朝比奈真冬", group: "25点，Nightcord见。", subtitle: "空虚优等生", color: "#8888cc",
       desc: "外表完美内心空洞，阴郁而破碎。你习惯隐藏真实感受，寻找内心光点。",
       quote: "世界是什么颜色，我从来都不在乎。", traits: [1,5,3,4,2] },
-    { id: 18, name: "东云绘名", group: "25点，Nightcord见。", subtitle: "渴望认可的画家",
+    { id: 18, name: "东云绘名", group: "25点，Nightcord见。", subtitle: "渴望认可的画家", color: "#ccaa88",
       desc: "直率而自卑，积极带动气氛。你渴望肯定，用热情掩饰焦虑。",
       quote: "我想画出能被称赞的作品，想被看到。", traits: [4,2,5,3,1] },
-    { id: 19, name: "晓山瑞希", group: "25点，Nightcord见。", subtitle: "气氛调和者",
+    { id: 19, name: "晓山瑞希", group: "25点，Nightcord见。", subtitle: "气氛调和者", color: "#ddaacc",
       desc: "开朗的团队润滑剂，有着不为人知的烦恼。你外向却细腻，照顾他人情绪。",
       quote: "没关系的，大家在一起就没问题。", traits: [5,3,2,4,1] }
 ];
 
-// 生成30道题目，涵盖性格维度: 外向/内向、感性/理性、创新/传统、共情/独立、行动力/沉思等
-// 每道题对应5个选项 非常不同意 -> 非常同意 (分值1-5) 影响20个角色的倾向矩阵
+// 构建30道题目
 const QUESTIONS = [];
-// 性格维度：外向(E) vs内向(I) ；直觉(N) vs实感(S)；情感(F) vs思维(T)；感知(P) vs判断(J)；以及热情/冷静等独创维度
-// 为了涵盖20个角色独特差异，题目设计偏向音乐/友情/舞台/偶像/创作/街头/夜间活动等符合原作背景
 const questionBank = [
     { text: "在人群中，我往往是主动发起话题的那个人。", dim: "extravert" },
     { text: "比起热闹的聚会，我更享受独处或小范围深交。", dim: "introvert" },
@@ -454,7 +487,6 @@ const questionBank = [
     { text: "我偶尔会展现出反差萌或冒失的一面。", dim: "clumsy" },
     { text: "我认为友情是生命中最珍贵的羁绊。", dim: "friendship" }
 ];
-// 取前30题 (实际30题刚好)
 for(let i=0;i<30;i++) {
     let q = questionBank[i];
     QUESTIONS.push({
@@ -469,17 +501,15 @@ for(let i=0;i<30;i++) {
     });
 }
 
-// 每个角色理想得分向量（基于角色性格特点人工生成匹配系数，针对每个问题不同偏好）
-// 构建角色权重矩阵（20角色 x 30题） 分值1-5 代表该角色倾向期望值
+// 角色理想匹配矩阵 (基于性格加权)
 function buildCharacterProfiles() {
     let profiles = [];
     for(let c of CHARACTERS) {
         let scores = [];
         for(let i=0;i<30;i++) {
-            let base = 3; // 中等
-            // 根据角色traits 和 id 个性偏移，使结果差异化但又符合人设
+            let base = 3;
             const qText = QUESTIONS[i].text;
-            // 趣味规则基于角色名及特征倾向
+            // 根据角色个性丰富映射 (维持原有逻辑但确保差异化)
             if(qText.includes("主动发起话题") && (c.id===8||c.id===13||c.id===5||c.id===1)) base = 5;
             else if(qText.includes("主动发起话题") && (c.id===10||c.id===16||c.id===17||c.id===0)) base = 2;
             if(qText.includes("独处") && (c.id===16||c.id===17||c.id===10||c.id===3)) base = 5;
@@ -510,14 +540,12 @@ function buildCharacterProfiles() {
             if(qText.includes("完美主义") && (c.id===3||c.id===5||c.id===7)) base = 4;
             if(qText.includes("反差冒失") && (c.id===7||c.id===10)) base = 5;
             if(qText.includes("友情羁绊") && (c.id===0||c.id===2||c.id===12)) base = 5;
-            // 使数值在1~5内浮动
             scores.push(Math.min(5,Math.max(1, base + (c.id%3-1) )));
         }
         profiles.push(scores);
     }
     return profiles;
 }
-
 const IDEAL_PROFILES = buildCharacterProfiles();
 
 new Vue({
@@ -529,7 +557,9 @@ new Vue({
         answers: new Array(30).fill(undefined),
         isFinished: false,
         matchedCharacter: CHARACTERS[0],
-        matchPercentage: 0
+        matchPercentage: 0,
+        showEncyclopedia: false,   // 控制图鉴展开
+        allCharacters: CHARACTERS
     },
     computed: {
         currentQuestion() {
@@ -537,11 +567,15 @@ new Vue({
         },
         progressPercent() {
             return ((this.currentIndex+1) / this.totalQuestions) * 100;
+        },
+        matchedColor() {
+            if(this.matchedCharacter && this.matchedCharacter.color) return this.matchedCharacter.color;
+            return "#e76f51";
         }
     },
     methods: {
         selectOption(idx) {
-            this.$set(this.answers, this.currentIndex, idx); // 存储选项索引(0-4) value=idx+1
+            this.$set(this.answers, this.currentIndex, idx);
         },
         nextQuestion() {
             if(this.answers[this.currentIndex] !== undefined && this.currentIndex < this.totalQuestions-1) {
@@ -553,9 +587,7 @@ new Vue({
         },
         submitTest() {
             if(this.answers.some(a => a === undefined)) return;
-            // 计算用户向量 (每个题目得分 1~5)
             let userVec = this.answers.map(ansIdx => ansIdx+1);
-            // 与20个角色进行余弦相似度 + 欧式归一匹配
             let bestIdx = 0;
             let bestScore = -1;
             for(let i=0;i<CHARACTERS.length;i++) {
@@ -567,7 +599,6 @@ new Vue({
                     magIdeal += ideal[j]*ideal[j];
                 }
                 let sim = dot / (Math.sqrt(magUser)*Math.sqrt(magIdeal) + 1e-6);
-                let percent = Math.round(sim * 100);
                 if(sim > bestScore) {
                     bestScore = sim;
                     bestIdx = i;
@@ -582,6 +613,10 @@ new Vue({
             this.answers = new Array(30).fill(undefined);
             this.currentIndex = 0;
             this.isFinished = false;
+            this.showEncyclopedia = false; // 重置时关闭图鉴保持清爽
+        },
+        getCharacterColor(id) {
+            return CHARACTERS.find(c => c.id === id)?.color || "#c7b09a";
         }
     }
 });
