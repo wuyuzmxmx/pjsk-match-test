@@ -770,23 +770,63 @@ h2 {
 .character-portrait {
   position: relative;
   display: grid;
-  height: clamp(360px, 34vw, 470px);
-  place-items: center;
+  height: clamp(430px, 42vw, 560px);
+  place-items: end center;
   overflow: visible;
-  padding: 18px 14px 0;
+  padding: 20px 12px 0;
 }
 
 .character-portrait img {
-  width: auto;
-  max-width: 88%;
+  position: relative;
+  z-index: 2;
+  width: 100%;
+  height: 100%;
+  max-width: 100%;
   max-height: 100%;
   object-fit: contain;
+  object-position: center bottom;
+  opacity: 1;
   filter: drop-shadow(0 18px 18px rgba(0, 0, 0, 0.34));
-  transition: transform 0.35s ease;
+  transition: opacity 0.35s ease, transform 0.35s ease;
+}
+
+.portrait-loader {
+  position: absolute;
+  inset: 18px 16px 0;
+  z-index: 1;
+  display: grid;
+  place-items: center;
+  border: 1px solid color-mix(in srgb, var(--accent), white 16%);
+  border-radius: 8px;
+  color: color-mix(in srgb, var(--accent), white 45%);
+  font-weight: 900;
+  text-align: center;
+  background:
+    radial-gradient(circle at 50% 18%, color-mix(in srgb, var(--accent), transparent 70%), transparent 34%),
+    rgba(7, 8, 23, 0.34);
+  overflow: hidden;
+}
+
+.portrait-loader::after {
+  position: absolute;
+  inset: 0;
+  content: "";
+  background: linear-gradient(110deg, transparent 24%, rgba(255, 255, 255, 0.16), transparent 68%);
+  animation: shineSweep 1.9s ease-in-out infinite;
+}
+
+.image-loading .character-portrait img,
+.image-slow .character-portrait img {
+  opacity: 0;
+}
+
+.image-loaded .portrait-loader,
+.image-missing .portrait-loader {
+  display: none;
 }
 
 .character-card:hover .character-portrait img {
-  transform: translateY(-5px) scale(1.03);
+  transform: translateY(-4px) scale(1.015);
 }
 
 .character-card div:last-child {
@@ -936,7 +976,8 @@ h2 {
   }
 
   .character-portrait {
-    height: clamp(340px, 82vw, 460px);
+    height: clamp(520px, 128vw, 680px);
+    padding-inline: 8px;
   }
 
   .option-button {
@@ -980,8 +1021,8 @@ h2 {
   }
 
   .character-portrait {
-    height: clamp(320px, 92vw, 420px);
-    padding-top: 12px;
+    height: clamp(500px, 142vw, 640px);
+    padding: 12px 6px 0;
   }
 }
 

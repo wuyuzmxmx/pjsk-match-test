@@ -1,4 +1,4 @@
-const prefersReducedMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+﻿const prefersReducedMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
 
 const characters = [
   { id: "ichika", name: "星乃一歌", unit: "Leo/need", color: "#33aaee", image: "https://pjsekai.sega.jp/assets/data/webp/character/unite01/ichika/now/img.png.webp", traits: ["沉稳", "重情义", "可靠"], description: "你像一歌一样，会把重要的人放在心上。你不一定声量最大，但会用稳定、诚恳的方式守住大家共同的节奏。" },
@@ -79,6 +79,7 @@ const resultImage = document.querySelector("#resultImage");
 const topMatches = document.querySelector("#topMatches");
 const characterGrid = document.querySelector("#characterGrid");
 const filterBar = document.querySelector("#filterBar");
+let characterImageObserver;
 
 function resetScores() {
   Object.keys(scores).forEach((key) => {
@@ -184,9 +185,10 @@ retakeBtn.addEventListener("click", restartQuiz);
 function renderCharacters(unit = "all") {
   const list = unit === "all" ? characters : characters.filter((character) => character.unit === unit);
   characterGrid.innerHTML = list.map((character) => `
-    <article class="character-card" style="--accent:${character.color}">
+    <article class="character-card image-loading" style="--accent:${character.color}">
       <div class="character-portrait">
-        <img src="${character.image}" alt="${character.name} 角色视觉" loading="lazy">
+        <div class="portrait-loader"><span>${character.name}</span></div>
+        <img data-src="${character.image}" alt="${character.name} 角色视觉" loading="lazy" decoding="async">
       </div>
       <div>
         <span>${character.unit}</span>
@@ -195,6 +197,64 @@ function renderCharacters(unit = "all") {
       </div>
     </article>
   `).join("");
+  setupCharacterImageLoading();
+}
+
+function loadCharacterImage(card) {
+  const image = card.querySelector("img[data-src]");
+  if (!image || image.dataset.loaded === "true") return;
+
+  image.dataset.loaded = "true";
+  image.src = image.dataset.src;
+
+  const slowTimer = window.setTimeout(() => {
+    if (!card.classList.contains("image-loaded")) {
+      card.classList.add("image-slow");
+      card.querySelector(".portrait-loader span").textContent = "网络较慢，仍在加载";
+    }
+  }, 4500);
+
+  image.addEventListener("load", () => {
+    window.clearTimeout(slowTimer);
+    card.classList.remove("image-loading", "image-slow");
+    card.classList.add("image-loaded");
+  }, { once: true });
+
+  image.addEventListener("error", () => {
+    window.clearTimeout(slowTimer);
+    card.classList.remove("image-loading", "image-slow");
+    card.classList.add("image-missing");
+  }, { once: true });
+}
+
+function setupCharacterImageLoading() {
+  characterImageObserver?.disconnect();
+  const cards = [...characterGrid.querySelectorAll(".character-card")];
+
+  if (!("IntersectionObserver" in window)) {
+    cards.forEach((card, index) => {
+      window.setTimeout(() => loadCharacterImage(card), index * 120);
+    });
+    return;
+  }
+
+  characterImageObserver = new IntersectionObserver((entries) => {
+    entries.forEach((entry) => {
+      if (!entry.isIntersecting) return;
+      loadCharacterImage(entry.target);
+      characterImageObserver.unobserve(entry.target);
+    });
+  }, { rootMargin: "900px 0px", threshold: 0.01 });
+
+  const eagerCount = window.innerWidth < 720 ? 1 : 4;
+
+  cards.forEach((card, index) => {
+    if (index < eagerCount) {
+      window.setTimeout(() => loadCharacterImage(card), index * 120);
+      return;
+    }
+    characterImageObserver.observe(card);
+  });
 }
 
 filterBar.addEventListener("click", (event) => {
@@ -296,8 +356,8 @@ function draw() {
   window.requestAnimationFrame(draw);
 }
 
-document.querySelectorAll("img").forEach((image) => {
-  image.addEventListener("error", () => image.closest(".character-card, .result-art")?.classList.add("image-missing"));
+document.querySelectorAll("img:not([data-src])").forEach((image) => {
+  image.addEventListener("error", () => image.closest(".result-art")?.classList.add("image-missing"));
 });
 
 resizeCanvas();
@@ -309,3 +369,4 @@ window.addEventListener("resize", () => {
   resizeCanvas();
   seedParticles();
 });
+
